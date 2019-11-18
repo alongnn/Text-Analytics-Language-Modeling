@@ -1,13 +1,9 @@
 logging:
   LOGGER_NAME: 'root'
 
-
-load_data:
-  train_file: "Data/amazon_review_full_csv/train.csv"
-  test_file: "Data/amazon_review_full_csv/test.csv"
-
-summary_stats:
-  save_location: "Outputs/"
-
-models:
-  save_location: "Models/"
+fetch_data:
+  link: "http://www.gutenberg.org/cache/epub/"
+  indices:
+    start: 1
+    end: 1000
+  save_location: "Data/raw/"
