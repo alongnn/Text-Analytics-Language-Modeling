@@ -40,14 +40,23 @@ def fetch_data(args):
     for i in range(config["fetch_data"]["indices"]["start"], config["fetch_data"]["indices"]["end"]+1):
         try:
             time.sleep(1)
-            req_link = config["fetch_data"]["link"] + str(i) + "/pg" + str(i) + ".txt"
-            response = requests.get(req_link)
+            req_link1 = "http://www.gutenberg.org/cache/epub/" + str(i) + "/pg" + str(i) + ".txt"
+            response1 = requests.get(req_link1)
             
-            response.encoding = "UTF-8"
+            req_link2 = "http://www.gutenberg.org/files/" + str(i) + "/" + str(i) + "-0.txt"
+            response2 = requests.get(req_link2)
             
-            if response.status_code == 200:
+            response1.encoding = "UTF-8"
+            response2.encoding = "UTF-8"
+            
+            if response1.status_code == 200:
                 with open(config["fetch_data"]["save_location"] + str(i) + ".txt", "w", encoding="UTF-8") as text_file:
-                    text_file.write(response.text)
+                    text_file.write(response1.text)
+                
+            elif response2.status_code == 200:
+                with open(config["fetch_data"]["save_location"] + str(i) + ".txt", "w", encoding="UTF-8") as text_file:
+                    text_file.write(response2.text)
+                
             else:
                 err_count = err_count + 1   
                 logger.error("Status Code {} returned for index {}".format(response.status_code, i))
@@ -62,7 +71,5 @@ def fetch_data(args):
     logger.info("Total Errorred documents: {}".format(err_count))
     logger.info("Total Successful documents: {}".format(config["fetch_data"]["indices"]["end"] - config["fetch_data"]["indices"]["start"] + 1 -err_count))
     logger.info("Total Time taken: {}".format(datetime.datetime.now()-tstart))
-
-
 
     return
