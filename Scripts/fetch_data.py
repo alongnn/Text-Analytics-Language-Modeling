@@ -28,7 +28,7 @@ def fetch_data(args):
     logger.debug("Running the fetch_data function")
 
     #Loading the config
-    with open(os.path.join("config","config.yml"), "r") as f:
+    with open(os.path.join("Config","config.yml"), "r") as f:
         config = yaml.safe_load(f)
 
     #Starting the scraping process

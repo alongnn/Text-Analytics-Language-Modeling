@@ -11,7 +11,7 @@ import logging
 import logging.config
 import yaml
 
-with open(os.path.join("config","config.yml"), "r") as f:
+with open(os.path.join("Config","config.yml"), "r") as f:
     config = yaml.safe_load(f)
 
 # The logging configurations are called from local.conf
