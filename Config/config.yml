@@ -4,6 +4,6 @@ logging:
 fetch_data:
   link: "http://www.gutenberg.org/cache/epub/"
   indices:
-    start: 190
-    end: 210
+    start: 50000
+    end: 62000
   save_location: "Data/raw/"

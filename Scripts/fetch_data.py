@@ -11,6 +11,7 @@ import yaml
 import logging
 import datetime
 import requests
+import time
 
 logger = logging.getLogger()
 
@@ -38,6 +39,7 @@ def fetch_data(args):
     logger.info("Starting web scraping now.")
     for i in range(config["fetch_data"]["indices"]["start"], config["fetch_data"]["indices"]["end"]+1):
         try:
+            time.sleep(1)
             req_link = config["fetch_data"]["link"] + str(i) + "/pg" + str(i) + ".txt"
             response = requests.get(req_link)
             
@@ -50,7 +52,8 @@ def fetch_data(args):
                 err_count = err_count + 1   
                 logger.error("Status Code {} returned for index {}".format(response.status_code, i))
             
-            if i % 100 == 0:
+            if i % 500 == 0:
+                time.sleep(30)
                 logger.info("At Index {}. Time Elapsed: {}".format(i, datetime.datetime.now()-tstart))  
 
         except Exception as e:
