@@ -33,7 +33,8 @@ def fetch_data(args):
 
     #Starting the scraping process
     tstart = datetime.datetime.now()
-    
+    err_count = 0
+
     logger.info("Starting web scraping now.")
     for i in range(config["fetch_data"]["indices"]["start"], config["fetch_data"]["indices"]["end"]+1):
         try:
@@ -46,6 +47,7 @@ def fetch_data(args):
                 with open(config["fetch_data"]["save_location"] + str(i) + ".txt", "w", encoding="UTF-8") as text_file:
                     text_file.write(response.text)
             else:
+                err_count = err_count + 1   
                 logger.error("Status Code {} returned for index {}".format(response.status_code, i))
             
             if i % 100 == 0:
@@ -53,7 +55,11 @@ def fetch_data(args):
 
         except Exception as e:
             logger.error(e)
-
-    logger.info("All articles downloaded. Total Time taken: {}".format(datetime.datetime.now()-tstart))
     
+    logger.info("Total Errorred documents: {}".format(err_count))
+    logger.info("Total Successful documents: {}".format(config["fetch_data"]["indices"]["end"] - config["fetch_data"]["indices"]["start"] + 1 -err_count))
+    logger.info("Total Time taken: {}".format(datetime.datetime.now()-tstart))
+
+
+
     return
