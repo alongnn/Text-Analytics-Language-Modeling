@@ -15,7 +15,7 @@ with open(os.path.join("Config","config.yml"), "r") as f:
     config = yaml.safe_load(f)
 
 # The logging configurations are called from local.conf
-logging.config.fileConfig(os.path.join("config","logging_local.conf"))
+logging.config.fileConfig(os.path.join("Config","logging_local.conf"))
 logger = logging.getLogger(config['logging']['LOGGER_NAME'])
 
 from Scripts.fetch_data import fetch_data
