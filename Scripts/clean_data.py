@@ -35,6 +35,8 @@ def clean_data(args):
 
     file_list = [i for i in os.listdir(config["fetch_data"]["save_location"]) if i[-3:]=="txt"]
 
+    tstart = datetime.datetime.now()
+    
     for i in file_list:
 
         f = open(os.path.join(config["fetch_data"]["save_location"], i), "r", encoding="UTF-8")
@@ -71,4 +73,5 @@ def clean_data(args):
 
             logger.debug("File {} Cleaned.".format(i))
 
+    logger.info("Total Time taken: {}".format(datetime.datetime.now()-tstart))
     return
