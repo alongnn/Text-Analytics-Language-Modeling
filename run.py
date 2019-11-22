@@ -19,19 +19,20 @@ logging.config.fileConfig(os.path.join("Config","logging_local.conf"))
 logger = logging.getLogger(config['logging']['LOGGER_NAME'])
 
 from Scripts.fetch_data import fetch_data
+from Scripts.clean_data import clean_data
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Run components of the run source code")
     subparsers = parser.add_subparsers()
     
-    # Sub-parser for running data stats
+    # Sub-parser for scraping the data
     sb_fetch = subparsers.add_parser("fetch_data", description="Fetch the raw data from the source")
     sb_fetch.set_defaults(func=fetch_data)
 
-    # # Sub-parser for running logistic regression
-    # logit_reg = subparsers.add_parser("run_logit", description="Runs a logistic regression on the data")
-    # logit_reg.set_defaults(func=fit_logistic_regression)
+    # Sub-parser for running logistic regression
+    sb_clean = subparsers.add_parser("clean_data", description="Runs a logistic regression on the data")
+    sb_clean.set_defaults(func=clean_data)
 
     # # Sub-parser for running svm
     # svm = subparsers.add_parser("run_svm", description="Runs a SVM on the data")

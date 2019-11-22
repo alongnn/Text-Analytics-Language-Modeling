@@ -6,3 +6,6 @@ fetch_data:
     start: 50000
     end: 62000
   save_location: "Data/raw/"
+
+clean_data:
+  save_location: "Data/clean/"
