@@ -59,7 +59,7 @@ def clean_data(args):
                 try:
                     start_index = filter_contents.index(start_phrase2)
                 except Exception as e:
-                    logger.error(i + " - " + str(e))
+                    logger.error(i + " - Neither Start phrase found")
                     start_index = 0
 
             try:
@@ -68,7 +68,7 @@ def clean_data(args):
                 try:
                     end_index = filter_contents.index(end_phrase2)
                 except Exception as e:
-                    logger.error(i + " - " + str(e))
+                    logger.error(i + " - Neither End phrase found")
                     end_index = len(filter_contents)
 
             final_contents = contents[start_index + 1: end_index]
