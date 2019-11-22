@@ -45,22 +45,31 @@ def clean_data(args):
         #Filtering for english books and then removing the starting and ending sections
         if "Language: English\n" in contents:
             
-            filter_contents = [i[:39] for i in contents]
+            filter_contents = [i[:9] for i in contents]
 
-            start_phrase = "*** START OF THIS PROJECT GUTENBERG EBO"
-            end_phrase = "*** END OF THIS PROJECT GUTENBERG EBOOK"
-
-            try:
-                start_index = filter_contents.index(start_phrase)
-            except Exception as e:
-                logger.error(i + " - " + str(e))
-                start_index = 0
+            start_phrase1 = "*** START"
+            start_phrase2 = "***START "
+            
+            end_phrase1 = "*** END O"
+            end_phrase2 = "***END OF"
 
             try:
-                end_index = filter_contents.index(end_phrase)
+                start_index = filter_contents.index(start_phrase1)
             except Exception as e:
-                logger.error(i + " - " + str(e))
-                end_index = len(filter_contents)
+                try:
+                    start_index = filter_contents.index(start_phrase2)
+                except Exception as e:
+                    logger.error(i + " - " + str(e))
+                    start_index = 0
+
+            try:
+                end_index = filter_contents.index(end_phrase1)
+            except Exception as e:
+                try:
+                    end_index = filter_contents.index(end_phrase2)
+                except Exception as e:
+                    logger.error(i + " - " + str(e))
+                    end_index = len(filter_contents)
 
             final_contents = contents[start_index + 1: end_index]
 
