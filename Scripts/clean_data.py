@@ -51,13 +51,13 @@ def clean_data(args):
             try:
                 start_index = filter_contents.index(start_phrase)
             except Exception as e:
-                logger.error(i + " - " + e)
+                logger.error(i + " - " + str(e))
                 start_index = 0
 
             try:
                 end_index = filter_contents.index(end_phrase)
             except Exception as e:
-                logger.error(i + " - " + e)
+                logger.error(i + " - " + str(e))
                 end_index = len(filter_contents)
 
             final_contents = contents[start_index + 1: end_index]
