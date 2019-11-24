@@ -76,7 +76,7 @@ def clean_data(args):
             #Writing the new file
             write_string = ''.join(final_contents)
 
-            f = open(os.path.join(config["clean_data"]["save_location"], i),"w+", encoding="UTF-8")
+            f = open(os.path.join(config["create_corpus"]["save_location"], i),"w+", encoding="UTF-8")
             f.write(write_string)
             f.close()
 

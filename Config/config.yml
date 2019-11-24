@@ -9,3 +9,6 @@ fetch_data:
 
 clean_data:
   save_location: "Data/clean/"
+
+create_corpus:
+  save_location: "Data/processed/"
