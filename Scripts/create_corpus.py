@@ -15,6 +15,8 @@ import time
 
 logger = logging.getLogger()
 
+from Scripts.text_analytics_helpers import replace_occ
+
 def create_corpus(args):
     """
     Function to create the corpus. Creating corpus involves concatenating all the books and creating a single corpus to train the LMs on.
@@ -42,9 +44,16 @@ def create_corpus(args):
         contents = f.readlines()
         
         concat_contents.append(''.join(contents))
+        f.close()
 
-    #Writing the new file
+    #Concatinating the list
     write_string = ''.join(concat_contents)
+
+    #Cleaning the file
+    write_string = replace_occ(write_string, '\n')
+    write_string = write_string.split('\n')
+    write_string = ' '.join(write_string)
+    write_string = replace_occ(write_string, " ")
 
     f = open(os.path.join(config["create_corpus"]["save_location"], "processed_data.txt"),"w+", encoding="UTF-8")
     f.write(write_string)

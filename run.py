@@ -20,8 +20,9 @@ logger = logging.getLogger(config['logging']['LOGGER_NAME'])
 
 from Scripts.fetch_data import fetch_data
 from Scripts.clean_data import clean_data
-# from Scripts.neuralmodelsample import model1
 from Scripts.create_corpus import create_corpus
+from Scripts.neural_char_level_model import char_level_neural_net
+
 
 if __name__ == '__main__':
 
@@ -36,18 +37,14 @@ if __name__ == '__main__':
     sb_clean = subparsers.add_parser("clean_data", description="Runs a logistic regression on the data")
     sb_clean.set_defaults(func=clean_data)
 
-    # # Sub-parser for running model1
-    # svm = subparsers.add_parser("run_model1", description="Runs a SVM on the data")
-    # svm.set_defaults(func=model1)
-
     # Sub-parser for creating corpus
     corp_create = subparsers.add_parser("create_corpus", description="Create corpus to train models")
     corp_create.add_argument("--docCount", default=500, help="Count of books to be used for creating the corpus")
     corp_create.set_defaults(func=create_corpus)
 
-    # # Sub-parser for running cnn
-    # ft = subparsers.add_parser("run_cnn", description="Runs a cnn on the data")
-    # ft.set_defaults(func=fit_cnn)
+    # Sub-parser for running character level neural net
+    char_nn = subparsers.add_parser("run_c", description="Runs a cnn on the data")
+    char_nn.set_defaults(func=char_level_neural_net)
 
     # # Sub-parser for predicting using cnn
     # ft = subparsers.add_parser("predict_cnn", description="Predicts using cnn on the data")
