@@ -178,13 +178,12 @@ def char_level_neural_net(args):
     f.write('Batch Size: {}\n'.format(config["char_nn"]["batch_size"]))
     f.write('Embedding Dimensions: {}\n'.format(config["char_nn"]["embedding_dim"]))
     f.write('RNN Units: {}\n'.format(config["char_nn"]["rnn_units"]))
-    f.write('Patience: {}\n'.format(config["char_nn"]["patience"]))
     f.write('Epochs: {}\n'.format(config["char_nn"]["epochs"]))
     f.write('Validation Split: {}\n'.format(config["char_nn"]["validation_split"]))
     f.write('L2 penalty: {}\n'.format(config["char_nn"]["l2_penalty"]))
 
     f.write('\n\n\nModel Performance Metrics:\n')
-    f.write("Final val_categorical_crossentropy = {}".format(fit.history['val_categorical_crossentropy'][-1]))
+    f.write("val_categorical_crossentropy = {}".format(fit.history['val_categorical_crossentropy']))
     f.write("Total Train time = {}".format(train_time))
     f.close()
     
