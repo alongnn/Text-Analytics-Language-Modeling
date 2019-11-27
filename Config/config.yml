@@ -23,10 +23,34 @@ char_nn:
   batch_size: 250
   embedding_dim: 128
   rnn_type: "lstm"   #can be "lstm" or "gru"
-  rnn_layers: 2
+  rnn_layers: 5
   rnn_units: 256
   dropout: 0.3
   epochs: 5
   validation_split: 0.1
   l2_penalty: 0.0003
   model_name: "char_neural_model1"
+
+w2v_model:
+  model_name: "word2vec_300_model2"
+  size: 300
+  min_count: 100
+  workers: 4
+  window: 10
+  sg: 1 #1 or 0
+  hs: 1 #1 or 0
+
+word_nn: 
+  w2v_model: "Models/word2vec/GoogleNews-vectors-negative300.bin"
+  seq_length: 128
+  batch_size: 250
+  embedding_dim: 128
+  rnn_type: "lstm"   #can be "lstm" or "gru"
+  rnn_layers: 2
+  rnn_units: 256
+  dropout: 0.3
+  epochs: 5
+  validation_split: 0.1
+  l2_penalty: 0.0003
+  model_name: "word_neural_model1"
+  

@@ -1,7 +1,7 @@
 """
 Author: Saurabh Annadate
 
-Script to train a character level neural network.
+Script to train a word level neural network.
 
 """
 
@@ -24,14 +24,15 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.layers import Dense, LSTM, Embedding, Flatten, Dropout, GRU
 from keras.regularizers import l2
 
-from Scripts.text_analytics_helpers import split_input_target, char_data_generator
 from Scripts.helpers import create_dir
+
+from gensim.models import Word2Vec, KeyedVectors
 
 logger = logging.getLogger()
 
-def char_level_neural_net(args):
+def word_level_neural_net(args):
     """
-    This functions trains and saves a character level neural network
+    This functions trains and saves a word level neural network
 
     Args:
         None
@@ -39,19 +40,27 @@ def char_level_neural_net(args):
     Returns:
         None
     """
-    logger.debug("Running the char_level_neural_net function")
+logger.debug("Running the char_level_neural_net function")
 
-    #Loading the config
-    with open(os.path.join("Config","config.yml"), "r") as f:
-        config = yaml.safe_load(f)
+#Loading the config
+with open(os.path.join("Config","config.yml"), "r") as f:
+    config = yaml.safe_load(f)
 
-    #Creating folder for this run
-    create_dir(os.path.join("Models", config["char_nn"]["model_name"]))
+#Creating folder for this run
+create_dir(os.path.join("Models", config["word_nn"]["model_name"]))
 
-    #Loading the document
-    file = open(os.path.join(config["create_corpus"]["save_location"], "processed_data.txt"), 'r', encoding="UTF-8")
-    text = file.read()
-    file.close()
+model = KeyedVectors.load_word2vec_format(config["word_nn"]["w2v_model"], binary=True)
+
+
+a = np.ones(300)
+a = a*2
+np.random.normal(0,1/3,5)
+model.wv.most_similar(positive=[a])
+
+#Loading the document
+file = open(os.path.join(config["create_corpus"]["save_location"], "processed_data.txt"), 'r', encoding="UTF-8")
+text = file.read()
+file.close()
 
     logger.debug("Total characters in the corpus : {}".format(len(text)))
 
@@ -177,12 +186,13 @@ def char_level_neural_net(args):
     f.write('Batch Size: {}\n'.format(config["char_nn"]["batch_size"]))
     f.write('Embedding Dimensions: {}\n'.format(config["char_nn"]["embedding_dim"]))
     f.write('RNN Units: {}\n'.format(config["char_nn"]["rnn_units"]))
+    f.write('Patience: {}\n'.format(config["char_nn"]["patience"]))
     f.write('Epochs: {}\n'.format(config["char_nn"]["epochs"]))
     f.write('Validation Split: {}\n'.format(config["char_nn"]["validation_split"]))
     f.write('L2 penalty: {}\n'.format(config["char_nn"]["l2_penalty"]))
 
     f.write('\n\n\nModel Performance Metrics:\n')
-    f.write("val_categorical_crossentropy = {}".format(fit.history['val_categorical_crossentropy']))
+    f.write("Final val_categorical_crossentropy = {}".format(fit.history['val_categorical_crossentropy'][-1]))
     f.write("Total Train time = {}".format(train_time))
     f.close()
     

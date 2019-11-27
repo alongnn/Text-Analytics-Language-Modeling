@@ -22,7 +22,7 @@ from Scripts.fetch_data import fetch_data
 from Scripts.clean_data import clean_data
 from Scripts.create_corpus import create_corpus
 from Scripts.neural_char_level_model import char_level_neural_net
-
+from Scripts.word_embedding_model import word_embedding_model
 
 if __name__ == '__main__':
 
@@ -41,6 +41,10 @@ if __name__ == '__main__':
     corp_create = subparsers.add_parser("create_corpus", description="Create corpus to train models")
     corp_create.add_argument("--docCount", default=500, help="Count of books to be used for creating the corpus")
     corp_create.set_defaults(func=create_corpus)
+
+    # Sub-parser for running word2vec model
+    char_nn = subparsers.add_parser("run_w2v", description="Runs word2vec model on the data")
+    char_nn.set_defaults(func=word_embedding_model)
 
     # Sub-parser for running character level neural net
     char_nn = subparsers.add_parser("run_char_nn", description="Runs a cnn on the data")

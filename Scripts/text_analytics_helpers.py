@@ -39,7 +39,7 @@ def corpus_to_sent_tokens(doc):
     
     logger.debug("Running the corpus_to_sent_tokens function.")
 
-    #Cobverting to sentences
+    #Converting to sentences
     sent_tokens = sent_tokenize(doc)
 
     #Converting to word tokens
