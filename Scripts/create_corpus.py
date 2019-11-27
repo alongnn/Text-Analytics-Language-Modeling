@@ -28,7 +28,7 @@ def create_corpus(args):
         None
     
     """
-    logger.debug("Running the clean_data function")
+    logger.debug("Running the create_corpus function")
 
     #Loading the config
     with open(os.path.join("Config","config.yml"), "r") as f:

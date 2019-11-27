@@ -43,7 +43,7 @@ if __name__ == '__main__':
     corp_create.set_defaults(func=create_corpus)
 
     # Sub-parser for running character level neural net
-    char_nn = subparsers.add_parser("run_c", description="Runs a cnn on the data")
+    char_nn = subparsers.add_parser("run_char_nn", description="Runs a cnn on the data")
     char_nn.set_defaults(func=char_level_neural_net)
 
     # # Sub-parser for predicting using cnn
