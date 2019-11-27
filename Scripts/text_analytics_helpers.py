@@ -78,12 +78,10 @@ def char_data_generator(text, batch_size, char2idx, seq_length, vocab):
     while True:
         training_data = []
         
-        # keep looping until we reach our batch size
-        while len(training_data) < batch_size:
-            if itr > (len(text) - seq_length):
-                itr = 0
-            training_data.append(text[itr:itr+seq_length+1])
-            itr = itr + 1
+        training_data = [text[j:j+seq_length+1] for j in range(itr, itr + seq_length)]
+        itr = itr + seq_length
+        if itr > (len(text) - seq_length):
+            itr = 0
 
         training_data = list(map(split_input_target, training_data))
         train_texts = [i[0] for i in training_data]
