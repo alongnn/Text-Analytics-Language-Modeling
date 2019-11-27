@@ -41,10 +41,10 @@ w2v_model:
   hs: 1 #1 or 0
 
 word_nn: 
-  w2v_model: "Models/word2vec/GoogleNews-vectors-negative300.bin"
+  w2v_model: "Models/word2vec/word2vec_300_model1.model"
   seq_length: 128
   batch_size: 250
-  embedding_dim: 128
+  embedding_dim: 300
   rnn_type: "lstm"   #can be "lstm" or "gru"
   rnn_layers: 2
   rnn_units: 256
