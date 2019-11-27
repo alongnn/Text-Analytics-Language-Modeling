@@ -14,17 +14,19 @@ create_corpus:
   save_location: "Data/processed/"
 
 gen_training:
-  training_size: 1000 
+  char_nn_training_size: 20000000
   # This is the total character size that you would like to take for training
   # Put -1 if you do not want to limit the number of characters to be taken from the corpus to train
 
 char_nn:
-  seq_length: 100
-  BATCH_SIZE: 100
-  embedding_dim: 32
+  seq_length: 256
+  batch_size: 100
+  embedding_dim: 128
+  rnn_type: "lstm"   #can be "lstm" or "gru"
+  rnn_layers: 2
   rnn_units: 1024
-  patience: 3
-  epochs: 10
-  VALIDATION_SPLIT: 0.1
+  dropout: 0.3
+  epochs: 5
+  validation_split: 0.1
   l2_penalty: 0.0003
-  model_name: "char_neural_model2"
+  model_name: "char_neural_model3"

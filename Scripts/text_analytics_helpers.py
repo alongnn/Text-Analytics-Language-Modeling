@@ -10,6 +10,10 @@ import os
 import multiprocessing
 import re
 import logging
+import numpy as np
+
+from sklearn.preprocessing import MultiLabelBinarizer
+from keras.preprocessing.sequence import pad_sequences
 
 logger = logging.getLogger()
 
@@ -52,9 +56,47 @@ def split_input_target(chunk):
     target_text = chunk[-1]
     return input_text, target_text
 
-a = [[5,3,4,5,6,7], [1,2,3,4,5,6], [9,6,5,4,3,2]]
+def char_data_generator(text, batch_size, char2idx, seq_length, vocab):
+    """Generator function to yield batches of data for training character level neural net
 
-b = list(map(split_input_target, a))
+    Args:
+        text (String): Data for creating training and eval sets
+        batch_size (int): size of batch
+        char2idx (Dict): Dictionary mapping character to index
+        seq_length (int): Sequence length to generate per training example
+        vocab (string): All characters present in the dataset
 
+    Yields:
+        X,y : Training / Evaluation data of desired batch size
+    """
 
+    itr = 0
 
+    lb = MultiLabelBinarizer()
+    lb.fit(vocab)
+    
+    while True:
+        training_data = []
+        
+        # keep looping until we reach our batch size
+        while len(training_data) < batch_size:
+            if itr > (len(text) - seq_length):
+                itr = 0
+            training_data.append(text[itr:itr+seq_length+1])
+            itr = itr + 1
+
+        training_data = list(map(split_input_target, training_data))
+        train_texts = [i[0] for i in training_data]
+        
+        train_texts_indices = []
+        for k in train_texts:
+            train_texts_indices.append([char2idx[c] for c in k])
+        
+        train_labels = [i[1] for i in training_data]
+
+        Y = lb.transform(train_labels)
+        Y = np.array(Y)
+
+        x_data = pad_sequences(train_texts_indices, maxlen=int(seq_length))
+
+        yield (x_data, Y)
