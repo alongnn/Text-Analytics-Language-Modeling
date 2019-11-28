@@ -172,5 +172,5 @@ def cal_perplexity(lm, val_text, ngram):
             n_words = n_words - 1
     
     perplexity = (1 / perplexity)**(1/n_words)
-    return perplexity
+    return perplexity, n_words
     

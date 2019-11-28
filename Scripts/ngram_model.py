@@ -70,7 +70,7 @@ def ngram_model(args):
     train_time = datetime.datetime.now() - tstart
 
     #Calculating perplexity
-    perplexity = cal_perplexity(lm, val_text, ngram=config["n_gram"]["gram_count"])
+    perplexity, n_words = cal_perplexity(lm, val_text, ngram=config["n_gram"]["gram_count"])
 
     with open(os.path.join("Models", "ngram_models", config["n_gram"]["model_name"]+".pkl"), 'wb') as f:
         pickle.dump(lm, f)
@@ -86,6 +86,7 @@ def ngram_model(args):
   
     f.write('\n\n\nModel Performance Metrics:\n')
     f.write("Perplexity = {}\n".format(perplexity))
+    f.write("n_words = {}\n".format(n_words))
     f.write("Total Train time = {}".format(train_time))
     f.close()
     
