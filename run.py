@@ -49,11 +49,11 @@ if __name__ == '__main__':
     char_nn.set_defaults(func=word_embedding_model)
 
     # Sub-parser for running character level neural net
-    char_nn = subparsers.add_parser("run_char_nn", description="Runs a cnn on the data")
+    char_nn = subparsers.add_parser("run_char_nn", description="Runs a character level nn on the data")
     char_nn.set_defaults(func=char_level_neural_net)
 
-    # Sub-parser for running character level neural net
-    word_nn = subparsers.add_parser("run_word_nn", description="Runs a cnn on the data")
+    # Sub-parser for running word level neural net
+    word_nn = subparsers.add_parser("run_word_nn", description="Runs a word level nn on the data")
     word_nn.set_defaults(func=word_level_neural_net)
 
     # # Sub-parser for predicting using cnn

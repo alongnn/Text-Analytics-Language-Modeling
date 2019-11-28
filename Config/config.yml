@@ -33,7 +33,7 @@ char_nn:
   model_name: "char_neural_model1"
 
 w2v_model:
-  model_name: "word2vec_300_model2"
+  model_name: "word2vec_300_model1"
   size: 300
   min_count: 100
   workers: 4

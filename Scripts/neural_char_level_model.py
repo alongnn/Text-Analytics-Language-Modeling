@@ -182,7 +182,7 @@ def char_level_neural_net(args):
     f.write('L2 penalty: {}\n'.format(config["char_nn"]["l2_penalty"]))
 
     f.write('\n\n\nModel Performance Metrics:\n')
-    f.write("val_categorical_crossentropy = {}".format(fit.history['val_categorical_crossentropy']))
+    f.write("val_categorical_crossentropy = {}\n".format(fit.history['val_categorical_crossentropy']))
     f.write("Total Train time = {}".format(train_time))
     f.close()
     

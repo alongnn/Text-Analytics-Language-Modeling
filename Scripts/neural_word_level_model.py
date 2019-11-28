@@ -75,7 +75,12 @@ def word_level_neural_net(args):
 
     training_text = text_tokenized[0:index_split]
     val_text = text_tokenized[index_split+1:]
-
+    
+    
+    logger.debug("Validation size: {}".format(len(training_text)))
+    logger.debug("Eval size: {}".format(len(val_text)))
+    
+    
     batch_size = config["word_nn"]["batch_size"]
     seq_length = config["word_nn"]["seq_length"]
     embd_size = config["word_nn"]["embedding_dim"]
@@ -131,6 +136,7 @@ def word_level_neural_net(args):
                         bias_initializer='zeros'
                         ))
 
+    model.build((None, seq_length, embd_size))
     print(model.summary())
     
     logger.debug("Compiling Model now.")
@@ -152,7 +158,7 @@ def word_level_neural_net(args):
     train_time = datetime.datetime.now() - tstart
 
     model.save(os.path.join("Models", config["word_nn"]["model_name"], config["word_nn"]["model_name"] + ".model"))
-    logger.info("Final MSE = {}".format(fit.history['mse'][-1]))
+    logger.info("Final MSE = {}".format(fit.history['val_mean_squared_error'][-1]))
     logger.info("Training complete. Writing summary and performance file.")
 
     f = open(os.path.join("Models", config["word_nn"]["model_name"], config["word_nn"]["model_name"] + "_summary.txt"),"w+")
@@ -170,9 +176,10 @@ def word_level_neural_net(args):
     f.write('Epochs: {}\n'.format(config["word_nn"]["epochs"]))
     f.write('Validation Split: {}\n'.format(config["word_nn"]["validation_split"]))
     f.write('L2 penalty: {}\n'.format(config["word_nn"]["l2_penalty"]))
+    f.write('word2vev model: {}\n'.format(config["word_nn"]["w2v_model"]))
 
     f.write('\n\n\nModel Performance Metrics:\n')
-    f.write("Final val_categorical_crossentropy = {}".format(fit.history['val_categorical_crossentropy'][-1]))
+    f.write("Final val_mse = {}\n".format(fit.history['val_mean_squared_error'][-1]))
     f.write("Total Train time = {}".format(train_time))
     f.close()
     

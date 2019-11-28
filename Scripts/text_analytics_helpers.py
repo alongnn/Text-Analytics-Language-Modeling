@@ -80,7 +80,7 @@ def char_data_generator(text, batch_size, char2idx, seq_length, vocab):
         
         training_data = [text[j:j+seq_length+1] for j in range(itr, itr + batch_size)]
         itr = itr + batch_size
-        if itr >= (len(text) - (max(seq_length, batch_size)+1)):
+        if itr >= (len(text) - (max(seq_length, batch_size)*2)):
             itr = 0
 
         training_data = list(map(split_input_target, training_data))
@@ -123,13 +123,13 @@ def word_data_generator(tokenized_text, batch_size, w2v_model, embd_size, seq_le
     """
 
     itr = 0
-
+    
     while True:
         training_data = []
         
         training_data = [tokenized_text[j:j+seq_length+1] for j in range(itr, itr + batch_size)]
         itr = itr + batch_size
-        if itr >= (len(tokenized_text) - (max(seq_length, batch_size)+1)):
+        if itr >= (len(tokenized_text) - (max(seq_length, batch_size)*2)):
             itr = 0
 
         training_data = list(map(split_input_target, training_data))
