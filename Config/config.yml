@@ -17,16 +17,17 @@ gen_training:
   char_nn_training_size: 2000000
   # This is the total character size that you would like to take for training
   # Put -1 if you do not want to limit the number of characters to be taken from the corpus to train
+  word_nn_training_size: -1
 
 char_nn:
   seq_length: 128
   batch_size: 250
   embedding_dim: 128
   rnn_type: "lstm"   #can be "lstm" or "gru"
-  rnn_layers: 5
+  rnn_layers: 2
   rnn_units: 256
   dropout: 0.3
-  epochs: 5
+  epochs: 2
   validation_split: 0.1
   l2_penalty: 0.0003
   model_name: "char_neural_model1"

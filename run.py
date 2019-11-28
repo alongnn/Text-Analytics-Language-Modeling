@@ -21,8 +21,10 @@ logger = logging.getLogger(config['logging']['LOGGER_NAME'])
 from Scripts.fetch_data import fetch_data
 from Scripts.clean_data import clean_data
 from Scripts.create_corpus import create_corpus
-from Scripts.neural_char_level_model import char_level_neural_net
 from Scripts.word_embedding_model import word_embedding_model
+from Scripts.neural_char_level_model import char_level_neural_net
+from Scripts.neural_word_level_model import word_level_neural_net
+
 
 if __name__ == '__main__':
 
@@ -49,6 +51,10 @@ if __name__ == '__main__':
     # Sub-parser for running character level neural net
     char_nn = subparsers.add_parser("run_char_nn", description="Runs a cnn on the data")
     char_nn.set_defaults(func=char_level_neural_net)
+
+    # Sub-parser for running character level neural net
+    word_nn = subparsers.add_parser("run_word_nn", description="Runs a cnn on the data")
+    word_nn.set_defaults(func=word_level_neural_net)
 
     # # Sub-parser for predicting using cnn
     # ft = subparsers.add_parser("predict_cnn", description="Predicts using cnn on the data")

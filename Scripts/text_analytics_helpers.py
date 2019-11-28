@@ -80,7 +80,7 @@ def char_data_generator(text, batch_size, char2idx, seq_length, vocab):
         
         training_data = [text[j:j+seq_length+1] for j in range(itr, itr + batch_size)]
         itr = itr + batch_size
-        if itr >= (len(text) - (seq_length+1)):
+        if itr >= (len(text) - (max(seq_length, batch_size)+1)):
             itr = 0
 
         training_data = list(map(split_input_target, training_data))
@@ -99,56 +99,50 @@ def char_data_generator(text, batch_size, char2idx, seq_length, vocab):
 
         yield (x_data, Y)
 
-# def word_data_generator(tokenized_text, batch_size, w2v_model, embd_size, seq_length):
-#     """Generator function to yield batches of data for training word level neural net
+def get_embd(word, model, embd_size):
+    """ Returns the word2vec embedding of the word provided from the model or returns a random embedding if word not found
+    """
+    try:
+        embd = model.wv.get_vector(word)
+    except Exception as e:
+        embd = np.random.normal(0,1/3,embd_size) #If the word is not present in the dictionary, assigning random
+    return embd
 
-#     Args:
-#         tokenized_text (List): Tokenized corpus
-#         batch_size (int): size of batch
-#         w2v_model (word2vec model object): word2vec model object
-#         embd_size (int): word2vec model object embedding size
-#         seq_length (int): Sequence length to generate per training example
+def word_data_generator(tokenized_text, batch_size, w2v_model, embd_size, seq_length):
+    """Generator function to yield batches of data for training word level neural net
 
-#     Yields:
-#         X,y : Training / Evaluation data of desired batch size
-#     """
+    Args:
+        tokenized_text (List): Tokenized corpus
+        batch_size (int): size of batch
+        w2v_model (word2vec model object): word2vec model object
+        embd_size (int): word2vec model object embedding size
+        seq_length (int): Sequence length to generate per training example
 
-#     itr = 0
+    Yields:
+        X,y : Training / Evaluation data of desired batch size
+    """
 
-#     while True:
-#         training_data = []
+    itr = 0
+
+    while True:
+        training_data = []
         
-#         training_data = [tokenized_text[j:j+seq_length+1] for j in range(itr, itr + seq_length)]
-#         itr = itr + seq_length
-#         if itr > (len(tokenized_text) - seq_length):
-#             itr = 0
+        training_data = [tokenized_text[j:j+seq_length+1] for j in range(itr, itr + batch_size)]
+        itr = itr + batch_size
+        if itr >= (len(tokenized_text) - (max(seq_length, batch_size)+1)):
+            itr = 0
 
-#         training_data = list(map(split_input_target, training_data))
-#         train_texts = [i[0] for i in training_data]
-#         train_labels = [i[1] for i in training_data]
+        training_data = list(map(split_input_target, training_data))
+        train_texts = [i[0] for i in training_data]
+        train_labels = [i[1] for i in training_data]
 
-#         train_texts_embd = []
-#         for word in train_texts:
-#             try:
-#                 embd = w2v_model.wv.get_vector(word)
-#             except Exception as e:
-#                 embd = np.random.normal(0,1/3,embd_size) #If the word is not present in the dictionary, assigning random
-#             train_texts_embd.append(embd)
-        
-#         try:
-#             Y = 
+        train_texts_embd = []
+        for trv in train_texts:
+            train_texts_embd.append([get_embd(z, w2v_model, embd_size) for z in trv])
 
-#         Y = lb.transform(train_labels)
-#         Y = np.array(Y)
+        train_labels_embd = [get_embd(z, w2v_model, embd_size) for z in train_labels]
 
-#         x_data = pad_sequences(train_texts_indices, maxlen=int(seq_length))
+        x_data = np.array(train_texts_embd)
+        Y = np.array(train_labels_embd)
 
-#         yield (x_data, Y)
-
-
-# a = ["a", "b", "c", "d"]
-# split_input_target(a)
-
-# from gensim.models import Word2Vec, KeyedVectors
-# loaded_model = Word2Vec.load('Models/word2vec/word2vec_300_model1.model')
-
+        yield (x_data, Y)
