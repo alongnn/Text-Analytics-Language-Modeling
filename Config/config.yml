@@ -19,6 +19,11 @@ gen_training:
   # Put -1 if you do not want to limit the number of characters to be taken from the corpus to train
   word_nn_training_size: -1
 
+n_gram:
+  gram_count: 4
+  model_name: "four_model"
+  validation_split: 0.1
+
 char_nn:
   seq_length: 128
   batch_size: 250

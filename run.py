@@ -24,7 +24,7 @@ from Scripts.create_corpus import create_corpus
 from Scripts.word_embedding_model import word_embedding_model
 from Scripts.neural_char_level_model import char_level_neural_net
 from Scripts.neural_word_level_model import word_level_neural_net
-
+from Scripts.ngram_model import ngram_model
 
 if __name__ == '__main__':
 
@@ -45,8 +45,8 @@ if __name__ == '__main__':
     corp_create.set_defaults(func=create_corpus)
 
     # Sub-parser for running word2vec model
-    char_nn = subparsers.add_parser("run_w2v", description="Runs word2vec model on the data")
-    char_nn.set_defaults(func=word_embedding_model)
+    w2v = subparsers.add_parser("run_w2v", description="Runs word2vec model on the data")
+    w2v.set_defaults(func=word_embedding_model)
 
     # Sub-parser for running character level neural net
     char_nn = subparsers.add_parser("run_char_nn", description="Runs a character level nn on the data")
@@ -56,13 +56,9 @@ if __name__ == '__main__':
     word_nn = subparsers.add_parser("run_word_nn", description="Runs a word level nn on the data")
     word_nn.set_defaults(func=word_level_neural_net)
 
-    # # Sub-parser for predicting using cnn
-    # ft = subparsers.add_parser("predict_cnn", description="Predicts using cnn on the data")
-    # ft.set_defaults(func=predict_cnn)
-
-    # # Sub-parser for predicting using cnn
-    # ft = subparsers.add_parser("predict_svm", description="Predicts using svm on the data")
-    # ft.set_defaults(func=predict_svm)
+    # Sub-parser for running a ngram model
+    ngram_mdl = subparsers.add_parser("run_ngram", description="Runs a ngram on the data")
+    ngram_mdl.set_defaults(func=ngram_model)
 
     args = parser.parse_args()
     args.func(args)

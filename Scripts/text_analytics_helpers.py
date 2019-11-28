@@ -146,3 +146,31 @@ def word_data_generator(tokenized_text, batch_size, w2v_model, embd_size, seq_le
         Y = np.array(train_labels_embd)
 
         yield (x_data, Y)
+
+def cal_perplexity(lm, val_text, ngram):
+    """Calculates the perplexity of the given model
+
+    Args:
+        lm (Class object of type nltk.lm): Model object
+        val_text (List): Validation text
+        ngram (int): n-grams of the model
+
+    Returns:
+        Perplexity score
+    """
+    perplexity = 1
+    n_words = len(val_text)
+
+    val_text_grp = [val_text[k:k+ngram] for k in range(len(val_text)-ngram)]
+    val_text_grp = list(map(split_input_target, val_text_grp))
+
+    for i in val_text_grp:
+        per = lm.score(i[1], context=i[0])
+        if per != 0:
+            perplexity = perplexity * per
+        else:
+            n_words = n_words - 1
+    
+    perplexity = (1 / perplexity)**(1/n_words)
+    return perplexity
+    
