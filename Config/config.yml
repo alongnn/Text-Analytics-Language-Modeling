@@ -60,3 +60,6 @@ word_nn:
   l2_penalty: 0.0003
   model_name: "word_neural_model1"
   
+char_api:
+  model_name: "char_neural_model3"
+  seq_length: 128

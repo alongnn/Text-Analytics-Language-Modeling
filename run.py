@@ -25,6 +25,7 @@ from Scripts.word_embedding_model import word_embedding_model
 from Scripts.neural_char_level_model import char_level_neural_net
 from Scripts.neural_word_level_model import word_level_neural_net
 from Scripts.ngram_model import ngram_model
+from Scripts.api import run_api
 
 if __name__ == '__main__':
 
@@ -59,6 +60,10 @@ if __name__ == '__main__':
     # Sub-parser for running a ngram model
     ngram_mdl = subparsers.add_parser("run_ngram", description="Runs a ngram on the data")
     ngram_mdl.set_defaults(func=ngram_model)
+
+    # Sub-parser for running a ngram model
+    char_api = subparsers.add_parser("run_api", description="Runs the API for char neural net")
+    char_api.set_defaults(func=run_api)
 
     args = parser.parse_args()
     args.func(args)
