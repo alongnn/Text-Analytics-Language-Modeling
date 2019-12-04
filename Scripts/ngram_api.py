@@ -39,7 +39,7 @@ with open(os.path.join("Models", "ngram_models", config["ngram_api"]["model_name
 def get_prediction(text, length = 500):
     """Returns the predicted text for the given length
     """
-    gen_text = lm.generate(length, text_seed=text, random_seed=12345)
+    gen_text = lm.generate(int(length), text_seed=text, random_seed=12345)
     return gen_text
 
 # request model prediction

@@ -71,9 +71,9 @@ if __name__ == '__main__':
     word_api = subparsers.add_parser("run_word_api", description="Runs the API for word neural net")
     word_api.set_defaults(func=run_word_api)
 
-    # Sub-parser for running the word API
-    word_api = subparsers.add_parser("run_ngram_api", description="Runs the API for word neural net")
-    word_api.set_defaults(func=run_ngram_api)
+    # Sub-parser for running the ngram API
+    ngram_api = subparsers.add_parser("run_ngram_api", description="Runs the API for n gram model")
+    ngram_api.set_defaults(func=run_ngram_api)
 
     args = parser.parse_args()
     args.func(args)
