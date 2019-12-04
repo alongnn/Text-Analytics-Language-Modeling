@@ -1,7 +1,7 @@
 """
 Author: Saurabh Annadate
 
-Script containing api for predicting using char_neural_model
+Script containing api for predicting using word_neural_model
 
 """
 
@@ -23,6 +23,10 @@ import tensorflow as tf
 from keras.preprocessing.sequence import pad_sequences
 from keras.models import load_model
 from keras.backend import set_session
+from Scripts.text_analytics_helpers import get_embd
+
+from gensim.models import Word2Vec, KeyedVectors
+from Scripts.text_analytics_helpers import corpus_to_sent_tokens
 
 app = Flask(__name__)
 
@@ -37,37 +41,32 @@ set_session(session)
 with open(os.path.join("Config","config.yml"), "r") as f:
     config = yaml.safe_load(f)
 
-#Loading the dictionaries
-with open(os.path.join("Models", config["char_api"]["model_name"], config["char_api"]["model_name"] + "_char2idx.pickle"), 'rb') as handle:
-    char2idx = pickle.load(handle)
+#Loading the w2v model
+w2vmodel = Word2Vec.load(config["word_api"]["w2v_model"])
+embd_size = config["word_api"]["embd_size"]
 
-with open(os.path.join("Models", config["char_api"]["model_name"], config["char_api"]["model_name"] + "_idx2char.pickle"), 'rb') as handle:
-    idx2char = pickle.load(handle)
-
-model = load_model(os.path.join("Models", config["char_api"]["model_name"], config["char_api"]["model_name"] + ".model"))
+model = load_model(os.path.join("Models", config["word_api"]["model_name"], config["word_api"]["model_name"] + ".model"))
 graph = tf.get_default_graph()
 
 #Clean text
 def process_text(text):
     """Processes the input text and returns the input in model ready format
     """
-    seq_length = config["char_api"]["seq_length"]
+    seq_length = config["word_api"]["seq_length"]
     text = text[-seq_length:]
-    text_indices = []
-
-    text_indices = [char2idx[c] for c in text]
-
-    x_data = np.array([text_indices])
+    
+    train_texts_embd = [get_embd(z, w2vmodel, embd_size) for z in text]
+    
+    x_data = np.array([train_texts_embd])
     return x_data
 
-def get_next_char(model_pred):
-    """Based on the model prediction, yield next character on the basis of the idx2char dictionary
+
+def get_next_word(model_pred):
+    """Based on the model prediction, yield next word on the basis of the idx2char dictionary
     """
-    model_pred_l = list(model_pred)
-    max_pred = max(model_pred_l[0])
-    max_index = list(model_pred_l[0]).index(max_pred)
-    next_char = idx2char[max_index]
-    return next_char
+    pred_vect = np.array(model_pred[0])
+    next_word = w2vmodel.wv.most_similar(positive = [pred_vect], topn=1)[0][0]
+    return next_word
 
 def get_prediction(text, length = 500):
     """Returns the predicted text for the given length
@@ -75,7 +74,7 @@ def get_prediction(text, length = 500):
     for i in range(int(length)):
         x_data = process_text(text)
         model_pred = model.predict(x_data)
-        text = text + str(get_next_char(model_pred))
+        text = text + " " + get_next_word(model_pred)
         logger.debug("At Index {}.".format(i))
     return text
 
@@ -90,7 +89,11 @@ def predict():
         inp_len = request.args.get('length')
     
     with graph.as_default():
-        if len(inp_text) < config["char_api"]["seq_length"]:
+        
+        text_tokenized = corpus_to_sent_tokens(inp_text)
+        text_tokenized = [item for sublist in text_tokenized for item in sublist]
+        
+        if len(text_tokenized) < config["word_api"]["seq_length"]:
             output = {"input_text": inp_text, "input_length": inp_len, "status": 400}
         else:
             pred_text = get_prediction(inp_text, inp_len)
@@ -98,5 +101,5 @@ def predict():
 
     return output
 
-def run_api(args):
+def run_word_api(args):
     app.run(debug=False)

@@ -63,3 +63,13 @@ word_nn:
 char_api:
   model_name: "char_neural_model3"
   seq_length: 128
+
+word_api:
+  w2v_model: "Models/word2vec/word2vec_300_model1.model"
+  embd_size: 300
+  model_name: "word_neural_model1"
+  seq_length: 128
+  
+ngram_api:
+  model_name: "four_model"
+  

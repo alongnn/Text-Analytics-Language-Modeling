@@ -144,7 +144,7 @@ def word_data_generator(tokenized_text, batch_size, w2v_model, embd_size, seq_le
 
         x_data = np.array(train_texts_embd)
         Y = np.array(train_labels_embd)
-
+        print(x_data.shape)
         yield (x_data, Y)
 
 def cal_perplexity(lm, val_text, ngram):
