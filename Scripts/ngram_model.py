@@ -21,7 +21,7 @@ from nltk.lm.preprocessing import padded_everygram_pipeline
 from nltk.lm import MLE
 
 from Scripts.helpers import create_dir
-from Scripts.text_analytics_helpers import corpus_to_sent_tokens, cal_perplexity
+from Scripts.text_analytics_helpers import corpus_to_sent_tokens
 
 logger = logging.getLogger()
 
@@ -69,9 +69,6 @@ def ngram_model(args):
 
     train_time = datetime.datetime.now() - tstart
 
-    #Calculating perplexity
-    perplexity, n_words = cal_perplexity(lm, val_text, ngram=config["n_gram"]["gram_count"])
-
     with open(os.path.join("Models", "ngram_models", config["n_gram"]["model_name"]+".pkl"), 'wb') as f:
         pickle.dump(lm, f)
 
@@ -85,8 +82,6 @@ def ngram_model(args):
     f.write('n-Grams: {}\n'.format(config["n_gram"]["gram_count"]))
   
     f.write('\n\n\nModel Performance Metrics:\n')
-    f.write("Perplexity = {}\n".format(perplexity))
-    f.write("n_words = {}\n".format(n_words))
     f.write("Total Train time = {}".format(train_time))
     f.close()
     
