@@ -71,5 +71,5 @@ word_api:
   seq_length: 128
   
 ngram_api:
-  model_name: "four_model"
+  model_name: "three_model"
   

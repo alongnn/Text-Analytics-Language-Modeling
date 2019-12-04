@@ -27,7 +27,7 @@ from Scripts.neural_word_level_model import word_level_neural_net
 from Scripts.ngram_model import ngram_model
 from Scripts.char_api import run_char_api
 from Scripts.word_api import run_word_api
-# from Scripts.ngram_api import run_ngram_api
+from Scripts.ngram_api import run_ngram_api
 
 if __name__ == '__main__':
 
@@ -72,8 +72,8 @@ if __name__ == '__main__':
     word_api.set_defaults(func=run_word_api)
 
     # Sub-parser for running the word API
-    # word_api = subparsers.add_parser("run_ngram_api", description="Runs the API for word neural net")
-    # word_api.set_defaults(func=run_ngram_api)
+    word_api = subparsers.add_parser("run_ngram_api", description="Runs the API for word neural net")
+    word_api.set_defaults(func=run_ngram_api)
 
     args = parser.parse_args()
     args.func(args)

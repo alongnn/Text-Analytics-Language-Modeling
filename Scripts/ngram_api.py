@@ -22,7 +22,7 @@ logger = logging.getLogger()
 from nltk.lm.preprocessing import padded_everygram_pipeline
 from nltk.lm import MLE
 
-from Scripts.text_analytics_helpers import corpus_to_sent_tokens, cal_perplexity
+from Scripts.text_analytics_helpers import corpus_to_sent_tokens
 
 logger = logging.getLogger()
 
