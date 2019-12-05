@@ -61,6 +61,7 @@ def predict():
     for k in pred_text:
         out_text = out_text + " " + k
     
+    out_text = out_text.replace("<s>", "").replace("</s>","")
     output = {"input_text": inp_text, "input_length": inp_len, "status": 200, "pred_text": out_text}
 
     return output
