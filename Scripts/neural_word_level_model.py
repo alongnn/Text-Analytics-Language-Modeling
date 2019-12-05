@@ -41,7 +41,7 @@ def word_level_neural_net(args):
     Returns:
         None
     """
-    logger.debug("Running the char_level_neural_net function")
+    logger.debug("Running the word_level_neural_net function")
 
     #Loading the config
     with open(os.path.join("Config","config.yml"), "r") as f:
